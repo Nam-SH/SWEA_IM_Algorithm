@@ -1,35 +1,39 @@
-import sys; sys.stdin = open('data/(5102)input.txt', 'r')
-from collections import deque
+import sys; sys.stdin = open('data/(1223)input.txt', 'r')
 
-def bfs(s):
-    global res
-    q.append(s)
-    visit[s] = True
+isp = {'(': 0, '+': 1, '-': 1, '*': 2, '/': 2}
+icp = {'(': 3, '+': 1, '-': 1, '*': 2, '/': 2}
 
-    while q:
-        s = q.popleft()
-        for k in arr[s]:
-            if arr[k] and not visit[k]:
-                q.append(k)
-                visit[k] = True
-                num[k] = num[s] +1
-                if k == g:
-                    res = num[k]
-                    return
+for tc in range(10):
+    N = int(input())
 
-for tc in range(int(input())):
-    v, e = map(int, input().split())
-    arr = [[0] * (v+1) for _ in range(v+1)]
-    visit = [False] * (v+1)
-    num = [0] * (v+1)
-    res = 0
-    for i in range(e):
-        i, j = map(int, input().split())
-        arr[i].append(j)
-        arr[j].append(i)
+    arr = input()
+    sign = []
+    res = []
+    for i in arr:
+        if i.isdigit(): res.append(i)
 
-    s, g = map(int, input().split())
-    q = deque()
-    bfs(s)
+        else:
+            if not sign: sign.append(i)
 
-    print('#{} {}'.format(tc + 1, res))
+            else:
+                if icp[i] > isp[sign[-1]]: sign.append(i)
+
+                else:
+                    while sign and icp[i] <= isp[sign[-1]]: res.append(sign.pop())
+                    sign.append(i)
+
+    while sign: res.append(sign.pop())
+
+    calc = []
+    for j in res:
+        if j.isdigit(): calc.append(j)
+
+        else:
+            b = int(calc.pop())
+            a = int(calc.pop())
+
+            if j == "+": c = a + b
+            else: c = a * b
+            calc.append(c)
+
+    print('#{} {}'.format(tc + 1, *calc))
