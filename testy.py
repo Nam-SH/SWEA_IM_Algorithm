@@ -1,39 +1,23 @@
-import sys; sys.stdin = open('data/(1223)input.txt', 'r')
+import sys; sys.stdin = open('data/(5099)input.txt', 'r')
+from collections import deque
 
-isp = {'(': 0, '+': 1, '-': 1, '*': 2, '/': 2}
-icp = {'(': 3, '+': 1, '-': 1, '*': 2, '/': 2}
+for tc in range(int(input())):
+    N, M = map(int, input().split())
+    arr = list(map(int, input().split()))
+    q = deque()
 
-for tc in range(10):
-    N = int(input())
+    for i in range(N): q.append([arr[i], i + 1])
 
-    arr = input()
-    sign = []
-    res = []
-    for i in arr:
-        if i.isdigit(): res.append(i)
+    j = 0
+    while len(q) != 1:
+        q[0][0] //= 2
 
+        if q[0][0] != 0: q.append(q.popleft())
         else:
-            if not sign: sign.append(i)
+            if N + j < M:
+                q.popleft()
+                q.append([arr[N + j], N + j + 1])
+                j += 1
+            else: q.popleft()
 
-            else:
-                if icp[i] > isp[sign[-1]]: sign.append(i)
-
-                else:
-                    while sign and icp[i] <= isp[sign[-1]]: res.append(sign.pop())
-                    sign.append(i)
-
-    while sign: res.append(sign.pop())
-
-    calc = []
-    for j in res:
-        if j.isdigit(): calc.append(j)
-
-        else:
-            b = int(calc.pop())
-            a = int(calc.pop())
-
-            if j == "+": c = a + b
-            else: c = a * b
-            calc.append(c)
-
-    print('#{} {}'.format(tc + 1, *calc))
+    print('#{} {}'.format(tc + 1, q[0][1]))
