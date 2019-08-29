@@ -1,47 +1,21 @@
-import sys; sys.stdin = open('data/(1247)input.txt', 'r')
+T = int(input())
+​
+for tc in range(1, T+1):
+    N, M, length = map(int, input().split())
+    rc = [list(map(int, input().split())) for _ in range(N)]
 
-from queue import Queue
-
-def BFS(s, G):
-
-    D[s] = 0
-    Q = Queue()
-    Q.put(s)
-
-    while not Q.empty():
-        u = Q.get()
-        for v, w in G[u]:
-            if D[v] > D[u] + w:
-                D[v] = D[u] + w
-                P[v] = u
-                Q.put(v)
-
-TC = int(input())
-for tc in range(10):
-
-    n = int(input())
-    data = list(map(int, input().split()))
-
-    arr = []
-    j = 1
-    for i in range(0, len(data) - 1, 2):
-        arr.append([j, data[i], data[i + 1]])
-        j += 1
-
-    arr[1][1:3], arr[-1][1:3] = arr[-1][1:3], arr[1][1:3]
-
-    G = [[] for _ in range(n + 3)]
-    for i in range(len(arr) - 1):
-        for j in range(i + 1, len(arr)):
-            w = abs(arr[j][2] - arr[i][2]) + abs(arr[j][1] - arr[i][1])
-            G[i + 1].append((j + 1, w))
-            G[j + 1].append((i + 1, w))
-
-    print(G)
-    D = [0xfffff] * (n + 3)
-    P = [i for i in range(n + 3)]
-
-    BFS(1, G)
-    #
-    # print(D[1:])
-    # print(P[1:])
+    for r in range(N - length + 1): # 행 N
+        for c in range(M - length + 1): # 열 M
+            S = S2 = 0 # 새로운 합을 계속 비교해야하니 0을 계속 할당해준다.
+            for i in range(r, r+length):
+                for j in range(c, c+length):
+                    S += rc[i][j]
+            # 작은 사각형도 같은 for문에 돌려주자
+            for ii in range(r+1, r+length -1): # 길이는 총 2인덱스가 빠져야 한다.
+            # 그래서 양옆을 각각 1더하고 1을 빼면 양옆이 2가 줄어든다.
+                for jj in range(c+1, c+length -1):
+                    S2 += rc[ii][jj]
+            result = S - S2
+            if result > Max:
+                Max = result
+    print('#{} {}'.format(tc, Max))
