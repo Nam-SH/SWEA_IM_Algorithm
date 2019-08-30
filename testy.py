@@ -4,19 +4,16 @@ from collections import deque
 for tc in range(int(input())):
     N, M = map(int, input().split())
     q = deque()
-    q.extend(input().split())
+    q.extend(map(int, input().split()))
 
     for i in range(M - 1):
-        data = input().split()
-        if int(max(q)) < int(data[0]):
+        data = deque()
+        data.extend(map(int, input().split()))
+        if max(q) < data[0]:
             q.extend(data)
-
-        elif int(min(q)) > int(data[0]):
-            q.extendleft(data)
-
         else:
             for j in range(len(q)):
-                if int(q[j]) > int(data[0]):
+                if q[j] > data[0]:
                     for k in range(len(data)):
                         q.insert(j, data[k])
                         j += 1
