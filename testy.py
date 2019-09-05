@@ -1,17 +1,22 @@
-import sys; sys.stdin = open('data/(6190)input.txt', 'r')
+def isDanjo(num):
+    while num >= 1:
+        num1 = num % 10
+        num = num // 10
+        num2 = num % 10
+        if num2 > num1:
+            return False
+    return True
 
-for tc in range(int(input())):
+T = int(input())
+for test_case in range(1, T + 1):
     N = int(input())
-    arr = list(map(int, input().split()))
-    Max = 0
-    for i in range(N - 1):
+    nums = list(map(int, input().split()))
+
+    ans = -1
+    for i in range(0, N - 1):
         for j in range(i + 1, N):
-            val = arr[i] * arr[j]
-            if val > 11:
-                val = arr[i] * arr[j]
-                if val > 11 and len(set(str(val))) >= 2:
-                    if list(str(val)) == sorted(list(str(val))):
-                        if Max < val:
-                            Max = val
-    if Max == 0: print('#{} -1'.format(tc + 1))
-    else: print('#{} {}'.format(tc + 1, Max))
+            num = nums[i] * nums[j]
+            if isDanjo(num):
+                if ans < num:
+                    ans = num
+    print('#%d %d' % (test_case, ans))
