@@ -2,6 +2,8 @@
 # Created by https://www.gitignore.io/api/pydev,python,django,pycharm,pycharm+iml,pycharm+all,visualstudiocode,jupyternotebooks
 # Edit at https://www.gitignore.io/?templates=pydev,python,django,pycharm,pycharm+iml,pycharm+all,visualstudiocode,jupyternotebooks
 
+testy_IM.py
+
 ### Django ###
 *.log
 *.pot
